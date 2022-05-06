@@ -6,8 +6,12 @@ const PORT = 5000;
 
 const server = http.createServer(app);
 
-await loadPlanets();
+async function startServer() {
+  await loadPlanets();
 
-server.listen(PORT, () => {
-  console.log(`Listening on PORT ${PORT}`);
-});
+  server.listen(PORT, () => {
+    console.log(`Listening on PORT ${PORT}`);
+  });
+}
+
+startServer();
