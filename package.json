@@ -1,0 +1,26 @@
+{
+  "name": "nasa-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-client":"npm install --prefix Client",
+    "install-server":"npm install --prefix Server",
+    "install":"npm run install-client && npm run install-server",
+    "server":"npm run watch --prefix Server",
+    "client":"npm start --prefix Client",    
+    "watch":"concurrently 'npm:server' 'npm:client'",
+    "deploy":"npm run build --prefix Client && npm start --prefix Server",
+    "test": "npm run test --prefix Server && npm run test --prefix Client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gauravself/NASA-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gauravself/NASA-Project/issues"
+  },
+  "homepage": "https://github.com/Gauravself/NASA-Project#readme"
+}
