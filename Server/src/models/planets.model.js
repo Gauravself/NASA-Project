@@ -41,7 +41,12 @@ function loadPlanets() {
   });
 }
 
+//Data Acess layer in Models
+function getAllplanets(){
+  return habitablePlanets;
+}
+
 module.exports = {
   loadPlanets,
-  planets: habitablePlanets,
+  getAllplanets,
 };
