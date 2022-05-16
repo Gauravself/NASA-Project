@@ -18,6 +18,11 @@ function httpAddNewLaunch(req, res) {
       })
   }
   launch.launchDate = new Date(launch.launchDate);
+  if(isNaN(launch.launchDate)){
+    return res.status(400).json({
+      error:'Invalid Launch Date'
+    });
+  }
   addNewLaunches(launch);
   return res.status(201).json(launch);
 }
