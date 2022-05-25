@@ -1,9 +1,7 @@
 const fs = require("fs");
-const path = require('path');
-const {parse} = require("csv-parse");
-
-
-const habitablePlanets = [];
+const path = require("path");
+const { parse } = require("csv-parse");
+const planets = require("./planets.mongo");
 
 function isHabitablePlanet(planet) {
   return (
@@ -25,26 +23,49 @@ function loadPlanets() {
           columns: true,
         })
       )
-      .on("data", (data) => {
+      .on("data", async (data) => {
         if (isHabitablePlanet(data)) {
-          habitablePlanets.push(data);
+          savePlanet(data);
         }
       })
       .on("error", (err) => {
         console.log(err);
         reject(err);
       })
-      .on("end", () => {
-        console.log(`${habitablePlanets.length} habitable planets found!`);
+      .on("end", async() => {
+        //Count number Planets returned from DB
+        const countPlanetFound = (await getAllplanets()).length;
+        console.log(`${countPlanetFound} habitable planets found!`);
         resolve();
       });
   });
 }
 
+//Get all Planets from DB, returns an Array
 //Data Acess layer in Models
-function getAllplanets(){
-  return habitablePlanets;
+async function getAllplanets() {
+  return await planets.find({},{
+    "_id":0,"__v":0
+  });
 }
+//Insert data into DB
+async function savePlanet(planet) {
+  try {
+    await planets.updateOne(
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch(err) {
+    console.error(`Saving Planet Failed with error -> ${err}`);
+  }
+};
 
 module.exports = {
   loadPlanets,
